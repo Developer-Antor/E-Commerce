@@ -1,0 +1,36 @@
+.admin {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.admin form {
+    border: 1px solid #000000;
+    border-radius: 10px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    background: #ffffff;
+    box-shadow: 34px 34px 68px #d9d9d9, -34px -34px 68px #ffffff;
+}
+
+.admin input {
+    margin-bottom: 1rem;
+    border: 1px solid #000000;
+    border-radius: 2px;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.admin button {
+    background-color: #67d3fb;
+    border: none;
+    outline: none;
+    color: #ffffff;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-radius: 5px;
+}
