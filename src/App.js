@@ -4,22 +4,18 @@ import Home from "./Components/Home";
 import { BrowserRouter as Router, Link, Route } from "react-router-dom";
 import Checkout from "./Components/Checkout";
 import Login from "./Authentication/Login";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { auth } from "./Firebase/Firebase";
 import { useStateValue } from "./Context/StateContextProvider";
 import Payment from "./Components/Payment";
-import { Elements } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
+
 import Admin from "./Admin/Admin";
-import Footer from "./Components/Footer";
+
 import NotAdmin from "./Admin/NotAdmin";
 import Orders from "./Components/Orders";
 function App() {
   const [{ user }, dispatch] = useStateValue();
-  const promise = loadStripe(
-    "pk_test_51I45ZkC5uekWT6ilv6aS0ABMeSlrc5yAwVNd55JW09BBJ7pHC8EWMLKB4S7o9CQndbdATDYKK0DfNb7ObujPTeMP00w85XZTHt"
-  );
-
+  const [load, setLoad] = useState(true);
   useEffect(() => {
     auth.onAuthStateChanged((authUser) => {
       console.log("USER", authUser);
@@ -28,16 +24,18 @@ function App() {
           type: "SET_USER",
           user: authUser,
         });
+        setLoad(false);
       } else {
         dispatch({
           type: "SET_USER",
           user: null,
         });
+        setLoad(false);
       }
     });
   }, []);
 
-  return (
+  const body = () => (
     <Router>
       <div className="App">
         <Header />
@@ -51,9 +49,7 @@ function App() {
           <Login />
         </Route>
         <Route path="/payment">
-          <Elements stripe={promise}>
-            <Payment />
-          </Elements>
+          <Payment />
         </Route>
         <Route path="/admin">
           {user?.uid !== "DHq57sXeDLWxE58J7VZRDM1WDHj1" ? (
@@ -68,6 +64,8 @@ function App() {
       </div>
     </Router>
   );
+
+  return <div>{load ? <h1>Loading...</h1> : body()}</div>;
 }
 
 export default App;
